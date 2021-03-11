@@ -47,7 +47,7 @@ namespace WheelOfFortune
         }
         public bool PhraseMatches(string guess)
         {
-            var success = _puzzlePhrase == guess.ToUpper();
+            bool success = _puzzlePhrase == guess.ToUpper();
 
             if (success)
             {
