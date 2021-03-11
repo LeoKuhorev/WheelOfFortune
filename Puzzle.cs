@@ -55,7 +55,7 @@ namespace WheelOfFortune
 
             foreach (char c in _puzzlePhrase)
             {
-                if (c == guess && c != ' ')
+                if (c == guess && char.IsLetter(guess))
                     count++;
             }
 
