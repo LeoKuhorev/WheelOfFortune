@@ -34,6 +34,10 @@ namespace WheelOfFortune
             {
                 Console.WriteLine("Please enter the number of players (between 1 and 5)");
                 var userResponse = Console.ReadLine();
+
+                if (userResponse.ToUpper() == "QUIT")
+                    throw new ApplicationException();
+
                 Int32.TryParse(userResponse, out _numberOfPlayers);
 
                 if (_numberOfPlayers < 1 || _numberOfPlayers > 5)
@@ -48,6 +52,9 @@ namespace WheelOfFortune
         {
             Console.Write("Enter your name: ");
             string name = Console.ReadLine().Trim();
+
+            if (name.ToUpper() == "QUIT")
+                throw new ApplicationException();
 
             Player newPlayer = new Player(name);
             _players.Add(newPlayer);
