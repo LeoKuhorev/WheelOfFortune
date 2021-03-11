@@ -22,26 +22,17 @@ namespace WheelOfFortune
         private void GenerateGuessedLetters()
         {
             foreach (char c in _puzzlePhrase)
-            {
-                if (!_guessedLetters.ContainsKey(c))
-                {
-                    _guessedLetters[c] = false;
-                }
-            }
+                _guessedLetters[c] = false;
         }
         public string DisplayPhrase()
         {
             string output = "";
             foreach (char c in _puzzlePhrase)
             {
-                if (_guessedLetters[c] || c == ' ')
-                {
+                if (_guessedLetters[c] || !char.IsLetter(c))
                     output += c;
-                }
                 else
-                {
                     output += "-";
-                }
             }
             return output;
         }
