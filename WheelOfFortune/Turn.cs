@@ -12,6 +12,8 @@ namespace WheelOfFortune
         {
             Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L / S)");
             string playerInput = Console.ReadLine().ToUpper();
+            if (playerInput == "QUIT")
+                throw new ApplicationException();
 
             while (!string.Equals("L", playerInput) && !string.Equals("S", playerInput))
             {
@@ -22,10 +24,13 @@ namespace WheelOfFortune
             return playerInput;
         }
 
-        private static void HandleGuess(Player player, Puzzle puzzle)
+        private static bool HandleGuess(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a letter:");
             string playerInput = Console.ReadLine().ToUpper().Trim();
+
+            if (playerInput == "QUIT")
+                throw new ApplicationException();
 
             while (playerInput.Length > 1 || string.IsNullOrEmpty(playerInput))
             {
@@ -45,12 +50,17 @@ namespace WheelOfFortune
             }
 
             Console.WriteLine(puzzle.DisplayPhrase());
+
+            return result > 0;
         }
 
-        private static void HandleSolve(Player player, Puzzle puzzle)
+        private static bool HandleSolve(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a word/phrase:");
             string playerInput = Console.ReadLine().ToUpper().Trim();
+
+            if (playerInput == "QUIT")
+                throw new ApplicationException();
 
             while (string.IsNullOrEmpty(playerInput))
             {
@@ -62,7 +72,8 @@ namespace WheelOfFortune
 
             if (result)
             {
-                Console.WriteLine("Congrats, you won!");
+                Console.WriteLine($"Congrats {player.Name}, you won!\n");
+                throw new ApplicationException();
             }
             else
             {
@@ -70,20 +81,25 @@ namespace WheelOfFortune
             }
 
             Console.WriteLine(puzzle.DisplayPhrase());
+
+            return result;
         }
 
-        public static void HandleTurn(Player player, Puzzle puzzle)
+        public static bool HandleTurn(Player player, Puzzle puzzle)
         {
+            bool successfulGuess;
             string playerSelection = GetPlayerSelection(player);
 
             if (playerSelection == "L")
             {
-                HandleGuess(player, puzzle);
+                successfulGuess = HandleGuess(player, puzzle);
             }
             else
             {
-                HandleSolve(player, puzzle);
+                successfulGuess = HandleSolve(player, puzzle);
             }
+
+            return successfulGuess;
         }
     }
 }

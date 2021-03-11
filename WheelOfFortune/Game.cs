@@ -10,9 +10,10 @@ namespace WheelOfFortune
     {
         private string _welcomeMessage;
         private List<Player> _players;
+        private int _numberOfPlayers;
         public Game()
         {
-            _welcomeMessage = "Welcome to Wheel of Fortune!";
+            _welcomeMessage = "Welcome to Wheel of Fortune!\nYou can type \'quit\' any time to exit the game";
             _players = new List<Player>();
         }
 
@@ -25,6 +26,22 @@ namespace WheelOfFortune
         private int GetNumberOfRounds()
         {
             return 1;
+        }
+
+        private void GetNumberOfPlayers()
+        {
+            while (true)
+            {
+                Console.WriteLine("Please enter the number of players (between 1 and 5)");
+                var userResponse = Console.ReadLine();
+                Int32.TryParse(userResponse, out _numberOfPlayers);
+
+                if (_numberOfPlayers < 1 || _numberOfPlayers > 5)
+                    Console.WriteLine("Sorry, incorrect input");
+                else
+                    break;
+            }
+
         }
 
         private void AddPlayer()
@@ -50,18 +67,39 @@ namespace WheelOfFortune
 
         public void Start()
         {
-            GetWelcomeMessage();
-            AddPlayer();
-            Console.WriteLine($"Hello {GetPlayerNames()}");
-            var puzzle = new Puzzle();
-            Console.WriteLine("Here's your puzzle:");
-            Console.WriteLine(puzzle.DisplayPhrase());
-            while (!puzzle.IsSolved())
+            try
             {
-                foreach (Player player in _players)
+                GetWelcomeMessage();
+                GetNumberOfPlayers();
+
+                for (int i = 0; i < _numberOfPlayers; i++)
                 {
-                    Turn.HandleTurn(player, puzzle);
+                    AddPlayer();
                 }
+
+                Console.WriteLine($"Hello {GetPlayerNames()}\n");
+                var puzzle = new Puzzle();
+                Console.WriteLine("Here's your puzzle:");
+                Console.WriteLine(puzzle.DisplayPhrase());
+                while (!puzzle.IsSolved())
+                {
+                    foreach (Player player in _players)
+                    {
+                        bool succesfulGuess;
+                        while (true)
+                        {
+                            succesfulGuess = Turn.HandleTurn(player, puzzle);
+                            if (!succesfulGuess)
+                                break;
+                        }
+                        
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Game Over!\nThank you for playing!");
             }
         }
 
