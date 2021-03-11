@@ -9,9 +9,11 @@ namespace WheelOfFortune
     {
         private string _puzzlePhrase;
         private Dictionary<char, bool> _guessedLetters;
+        private bool _isSolved;
         public Puzzle()
         {
             _guessedLetters = new Dictionary<char, bool>();
+            _isSolved = false;
             GeneratePuzzle();
             GenerateGuessedLetters();
         }
@@ -44,6 +46,8 @@ namespace WheelOfFortune
             {
                 foreach (var key in _guessedLetters.Keys)
                     _guessedLetters[key] = true;
+
+                _isSolved = true;
             }
 
             return success;
@@ -65,5 +69,7 @@ namespace WheelOfFortune
 
             return count;
         }
+
+        public bool IsSolved() => _isSolved;
     }
 }
