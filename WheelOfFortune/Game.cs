@@ -17,7 +17,7 @@ namespace WheelOfFortune
 
         public Game()
         {
-            _welcomeMessage = "Welcome to Wheel of Fortune!\nYou can type \'quit\' any time to exit the game";
+            _welcomeMessage = " ===== Welcome to Wheel of Fortune! =====\n\nYou can type \'quit\' any time to exit the game\n";
             _players = new List<Player>();
         }
 
@@ -54,20 +54,20 @@ namespace WheelOfFortune
         {
             for (int i = 0; i < _numberOfPlayers; i++)
             {
-                AddPlayer();
+                AddPlayer(i+1);
             }
+            Console.WriteLine($"Hello {GetPlayerNames()}\n");
         }
 
         /// <summary>Prompts user to enter player name and creates new instance of Player</summary>
-        private void AddPlayer()
+        private void AddPlayer(int playerNumber)
         {
-            Console.Write("Enter your name: ");
+            Console.Write($"Player {playerNumber}, enter your name: ");
 
             string name = Utils.CaptureUserInput();
             Player newPlayer = string.IsNullOrWhiteSpace(name) ? new Player() : new Player(name);
             _players.Add(newPlayer);
 
-            Console.WriteLine($"Hello {GetPlayerNames()}\n");
         }
 
         /// <summary>Returns the string of all player names separated by comma</summary>

@@ -16,12 +16,12 @@ namespace WheelOfFortune
         /// <returns><c>"L"</c> if the user wants to guess a letter; <c>"S"</c> if the user wants to solve the puzzle</returns>
         private static string GetPlayerSelection(Player player)
         {
-            Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L / S)");
+            Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L/S):");
             string playerInput = Utils.CaptureUserInput();
 
             while (!string.Equals("L", playerInput) && !string.Equals("S", playerInput))
             {
-                Console.WriteLine("Sorry, not a valid option. Please enter [L] for letter guess or [S] to solve the puzzle.");
+                Console.WriteLine("Sorry, not a valid option. Please enter [L] to guess a letter or [S] to solve the puzzle.");
                 playerInput = Utils.CaptureUserInput();
             }
 
@@ -51,11 +51,15 @@ namespace WheelOfFortune
 
             if (result > 0)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"There are {result} matches.");
+                Console.ResetColor();
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Sorry, there were no matches.");
+                Console.ResetColor();
             }
 
             Console.WriteLine(puzzle.DisplayPhrase());
@@ -85,12 +89,16 @@ namespace WheelOfFortune
 
             if (result)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Congrats {player.Name}, you won!\n");
+                Console.ResetColor();
                 throw new ApplicationException();
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Sorry, try again.");
+                Console.ResetColor();
             }
 
             Console.WriteLine(puzzle.DisplayPhrase());
