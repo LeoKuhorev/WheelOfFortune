@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 namespace WheelOfFortune
 {
+    /// <summary>Handles generation of puzzle phrase and puzzle actions</summary>
     public class Puzzle
     {
         private string _puzzlePhrase;
         private Dictionary<char, bool> _guessedLetters;
         private bool _isSolved;
+
         public Puzzle()
         {
             _guessedLetters = new Dictionary<char, bool>();
@@ -17,15 +19,25 @@ namespace WheelOfFortune
             GeneratePuzzle();
             GenerateGuessedLetters();
         }
+
+        /// <summary>Generates the puzzle</summary>
         private void GeneratePuzzle()
         {
             _puzzlePhrase = "Microsoft Leap".ToUpper();
         }
+
+        /// <summary>
+        /// Generates dictionary with every letter in the puzzle phrase as a key and sets their value to false (hidden)
+        /// </summary>
         private void GenerateGuessedLetters()
         {
             foreach (char c in _puzzlePhrase)
                 _guessedLetters[c] = false;
         }
+
+        /// <summary>
+        /// Retuns the phrase replacing all letters that were not guessed with dashes
+        /// </summary>
         public string DisplayPhrase()
         {
             string output = "";
@@ -38,6 +50,12 @@ namespace WheelOfFortune
             }
             return output;
         }
+
+        /// <summary>
+        /// Checks user guess against the entire puzzle
+        /// </summary>
+        /// <param name="guess">The user guess (entire phrase)</param>
+        /// <returns>Whether or not the guess is correct</returns>
         public bool PhraseMatches(string guess)
         {
             bool success = _puzzlePhrase == guess.ToUpper();
@@ -52,6 +70,12 @@ namespace WheelOfFortune
 
             return success;
         }
+
+        /// <summary>
+        /// Checks user guess for individual letters in the entire puzzle
+        /// </summary>
+        /// <param name="guess">The user guess (letter)</param>
+        /// <returns>Number of letters found in the puzzle that were not previously guessed</returns>
         public int GetNumberOfMatches(char guess)
         {
             guess = char.ToUpper(guess);
@@ -70,6 +94,12 @@ namespace WheelOfFortune
             return count;
         }
 
+        /// <summary>
+        /// Determines whether the puzzle is solved
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the puzzle is solved; otherwise, <c>false</c>
+        /// </returns>
         public bool IsSolved() => _isSolved;
     }
 }

@@ -27,7 +27,5 @@ namespace WheelOfFortune.UnitTests
 
             Assert.AreEqual(playerName, "John Doe");
         }
-
-
     }
 }

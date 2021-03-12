@@ -10,6 +10,7 @@ namespace WheelOfFortune
         {
             Name = "Anon";
         }
+
         public Player(string name)
         {
             Name = name;

@@ -6,28 +6,32 @@ using System.Threading.Tasks;
 
 namespace WheelOfFortune
 {
+    /// <summary>
+    /// Game orchestrator <br/>
+    /// </summary>
     public class Game
     {
         private string _welcomeMessage;
         private List<Player> _players;
         private int _numberOfPlayers;
+
         public Game()
         {
             _welcomeMessage = "Welcome to Wheel of Fortune!\nYou can type \'quit\' any time to exit the game";
             _players = new List<Player>();
         }
 
+        /// <summary>Displays the welcome message.</summary>
         private void GetWelcomeMessage()
         {
             // Insert ASCII art here later
             Console.WriteLine(_welcomeMessage);
         }
 
-        private int GetNumberOfRounds()
-        {
-            return 1;
-        }
+        /// <summary>Gets the number of rounds. (Currently not implemented)</summary>
+        private int GetNumberOfRounds() => 1;
 
+        /// <summary> Gets the number of players and assigns the value to _numberOfPlayers.</summary>
         private void GetNumberOfPlayers()
         {
             while (true)
@@ -45,6 +49,7 @@ namespace WheelOfFortune
 
         }
 
+        /// <summary>Adds players to the _players based on _numberOfPlayers.</summary>
         private void AddPlayers()
         {
             for (int i = 0; i < _numberOfPlayers; i++)
@@ -53,6 +58,7 @@ namespace WheelOfFortune
             }
         }
 
+        /// <summary>Prompts user to enter player name and creates new instance of Player</summary>
         private void AddPlayer()
         {
             Console.Write("Enter your name: ");
@@ -64,6 +70,7 @@ namespace WheelOfFortune
             Console.WriteLine($"Hello {GetPlayerNames()}\n");
         }
 
+        /// <summary>Returns the string of all player names separated by comma</summary>
         private string GetPlayerNames()
         {
             var output = new List<string>();
@@ -76,6 +83,7 @@ namespace WheelOfFortune
             return (string.Join(", ", output));
         }
 
+        /// <summary>Starts the game</summary>
         public void Start()
         {
             try
@@ -94,12 +102,9 @@ namespace WheelOfFortune
                     {
                         bool successfulGuess = true;
                         while (successfulGuess)
-                        {
                             successfulGuess = Turn.HandleTurn(player, puzzle);
-                        }
                     }
                 }
-
             }
             catch (ApplicationException)
             {

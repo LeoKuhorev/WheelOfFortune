@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WheelOfFortune
 {
+    /// <summary>
+    /// Handles Wheel (Currently not implemented)
+    /// </summary>
     class Wheel
     {
         private int[] _pool;
