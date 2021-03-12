@@ -11,14 +11,12 @@ namespace WheelOfFortune
         private static string GetPlayerSelection(Player player)
         {
             Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L / S)");
-            string playerInput = Console.ReadLine().ToUpper();
-            if (playerInput == "QUIT")
-                throw new ApplicationException();
+            string playerInput = Utils.CaptureUserInput();
 
             while (!string.Equals("L", playerInput) && !string.Equals("S", playerInput))
             {
                 Console.WriteLine("Sorry, not a valid option. Please enter [L] for letter guess or [S] to solve the puzzle.");
-                playerInput = Console.ReadLine().ToUpper().Trim();
+                playerInput = Utils.CaptureUserInput();
             }
 
             return playerInput;
@@ -27,15 +25,12 @@ namespace WheelOfFortune
         private static bool HandleGuess(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a letter:");
-            string playerInput = Console.ReadLine().ToUpper().Trim();
-
-            if (playerInput == "QUIT")
-                throw new ApplicationException();
+            string playerInput = Utils.CaptureUserInput();
 
             while (playerInput.Length > 1 || string.IsNullOrEmpty(playerInput))
             {
                 Console.WriteLine("Invalid entry, please try again.");
-                playerInput = Console.ReadLine().ToUpper().Trim();
+                playerInput = Utils.CaptureUserInput();
             }
 
             int result = puzzle.GetNumberOfMatches(char.Parse(playerInput));
@@ -57,15 +52,12 @@ namespace WheelOfFortune
         private static bool HandleSolve(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a word/phrase:");
-            string playerInput = Console.ReadLine().ToUpper().Trim();
-
-            if (playerInput == "QUIT")
-                throw new ApplicationException();
+            string playerInput = Utils.CaptureUserInput();
 
             while (string.IsNullOrEmpty(playerInput))
             {
                 Console.WriteLine("Invalid entry, please try again.");
-                playerInput = Console.ReadLine().ToUpper().Trim();
+                playerInput = Utils.CaptureUserInput();
             }
 
             bool result = puzzle.PhraseMatches(playerInput);
