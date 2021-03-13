@@ -42,7 +42,7 @@ namespace WheelOfFortune
                 Int32.TryParse(userResponse, out _numberOfPlayers);
 
                 if (_numberOfPlayers < 1 || _numberOfPlayers > 5)
-                    Console.WriteLine("Sorry, incorrect input");
+                    Console.WriteLine("Sorry, invalid input.");
                 else
                     break;
             }
@@ -108,7 +108,7 @@ namespace WheelOfFortune
             }
             catch (ApplicationException)
             {
-                Console.WriteLine("Game Over!\nThank you for playing!");
+                Console.WriteLine("Game Over!\nThank you for playing!\nPress ENTER to end the game.");
                 Console.ReadLine();
             }
         }

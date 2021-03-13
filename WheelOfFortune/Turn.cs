@@ -52,13 +52,27 @@ namespace WheelOfFortune
             if (result > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"There are {result} matches.");
+                if (result == 1)
+                {
+                    Console.WriteLine($"There is 1 {playerInput}.");
+                }
+                else
+                {
+                    Console.WriteLine($"There are {result} {playerInput}s.");
+                }
                 Console.ResetColor();
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sorry, there were no matches.");
+                if (puzzle.DisplayPhrase().Contains(playerInput))
+                {
+                    Console.WriteLine($"Sorry, {playerInput} is already on the board.");
+                }
+                else
+                {
+                    Console.WriteLine($"Sorry, there are no {playerInput}s.");
+                }
                 Console.ResetColor();
             }
 
@@ -90,14 +104,16 @@ namespace WheelOfFortune
             if (result)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Congrats {player.Name}, you won!\n");
+                Console.WriteLine($"Congrats {player.Name}, you solved the puzzle!");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(puzzle.DisplayPhrase());
                 Console.ResetColor();
                 throw new ApplicationException();
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sorry, try again.");
+                Console.WriteLine("Sorry, that's incorrect.");
                 Console.ResetColor();
             }
 

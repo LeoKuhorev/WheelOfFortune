@@ -48,7 +48,7 @@ namespace WheelOfFortune
                 else
                     output += "-";
             }
-            return output;
+            return $"\n{output}\n";
         }
 
         /// <summary>
