@@ -1,17 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace WheelOfFortune
+﻿namespace WheelOfFortune
 {
-    /// <summary>Handles generation of puzzle phrase and puzzle actions</summary>
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Defines the <see cref="Puzzle" />.
+    /// </summary>
     public class Puzzle
     {
+        /// <summary>
+        /// Defines the _puzzlePhrase.
+        /// </summary>
         private string _puzzlePhrase;
+
+        /// <summary>
+        /// Defines the _guessedLetters.
+        /// </summary>
         private Dictionary<char, bool> _guessedLetters;
+
+        /// <summary>
+        /// Defines the _isSolved.
+        /// </summary>
         private bool _isSolved;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Puzzle"/> class.
+        /// </summary>
         public Puzzle()
         {
             _guessedLetters = new Dictionary<char, bool>();
@@ -20,14 +33,16 @@ namespace WheelOfFortune
             GenerateGuessedLetters();
         }
 
-        /// <summary>Generates the puzzle</summary>
+        /// <summary>
+        /// The GeneratePuzzle.
+        /// </summary>
         private void GeneratePuzzle()
         {
             _puzzlePhrase = "Microsoft Leap".ToUpper();
         }
 
         /// <summary>
-        /// Generates dictionary with every letter in the puzzle phrase as a key and sets their value to false (hidden)
+        /// Generates dictionary with every letter in the puzzle phrase as a key and sets their value to false (hidden).
         /// </summary>
         private void GenerateGuessedLetters()
         {
@@ -36,8 +51,9 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Retuns the phrase replacing all letters that were not guessed with dashes
+        /// The DisplayPhrase.
         /// </summary>
+        /// <returns>The <see cref="string"/>.</returns>
         public string DisplayPhrase()
         {
             string output = "";
@@ -52,10 +68,10 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Checks user guess against the entire puzzle
+        /// The PhraseMatches.
         /// </summary>
-        /// <param name="guess">The user guess (entire phrase)</param>
-        /// <returns>Whether or not the guess is correct</returns>
+        /// <param name="guess">The user guess (entire phrase).</param>
+        /// <returns>Whether or not the guess is correct.</returns>
         public bool PhraseMatches(string guess)
         {
             bool success = _puzzlePhrase == guess.ToUpper();
@@ -72,10 +88,10 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Checks user guess for individual letters in the entire puzzle
+        /// The GetNumberOfMatches.
         /// </summary>
-        /// <param name="guess">The user guess (letter)</param>
-        /// <returns>Number of letters found in the puzzle that were not previously guessed</returns>
+        /// <param name="guess">The user guess (letter).</param>
+        /// <returns>Number of letters found in the puzzle that were not previously guessed.</returns>
         public int GetNumberOfMatches(char guess)
         {
             guess = char.ToUpper(guess);
@@ -95,11 +111,9 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Determines whether the puzzle is solved
+        /// The IsSolved.
         /// </summary>
-        /// <returns>
-        ///   <c>true</c> if the puzzle is solved; otherwise, <c>false</c>
-        /// </returns>
+        /// <returns><c>true</c> if the puzzle is solved; otherwise, <c>false</c>.</returns>
         public bool IsSolved() => _isSolved;
     }
 }

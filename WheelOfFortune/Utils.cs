@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WheelOfFortune
+﻿namespace WheelOfFortune
 {
-    /// <summary>Contains common methods used in the application</summary>
-    class Utils
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="Utils" />.
+    /// </summary>
+    internal class Utils
     {
         /// <summary>
-        /// Captures the user input, brings it to uppercase and trims extra whitespace
+        /// Captures the user input, brings it to uppercase and trims extra whitespace.
         /// </summary>
-        /// <returns>Formatted user input</returns>
+        /// <returns>Formatted user input.</returns>
         public static string CaptureUserInput()
         {
             string playerInput = Console.ReadLine().ToUpper().Trim();
@@ -22,10 +20,9 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Handles the game quit
+        /// Handles the game quit.
         /// </summary>
-        /// <param name="playerInput">The player input</param>
-        /// <exception cref="ApplicationException">Raised when the player types 'quit'</exception>
+        /// <param name="playerInput">The player input.</param>
         public static void HandleQuit(string playerInput)
         {
             if (playerInput == "QUIT")

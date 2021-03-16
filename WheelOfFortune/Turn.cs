@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WheelOfFortune
+﻿namespace WheelOfFortune
 {
-    /// <summary>Handles what the user wants to do on a particular turn</summary>
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="Turn" />.
+    /// </summary>
     public class Turn
     {
         /// <summary>
-        /// Gets the player selection
+        /// Gets the player selection.
         /// </summary>
-        /// <param name="player">The player</param>
-        /// <returns><c>"L"</c> if the user wants to guess a letter; <c>"S"</c> if the user wants to solve the puzzle</returns>
+        /// <param name="player">The player.</param>
+        /// <returns><c>"L"</c> if the user wants to guess a letter; <c>"S"</c> if the user wants to solve the puzzle.</returns>
         private static string GetPlayerSelection(Player player)
         {
             Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L/S):");
@@ -29,13 +27,11 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Handles the guess
+        /// Handles the guess.
         /// </summary>
-        /// <param name="player">The player</param>
-        /// <param name="puzzle">The puzzle</param>
-        /// <returns>
-        ///<c>true</c> if the letter was present in the puzzle; otherwise, <c>false</c>
-        /// </returns>
+        /// <param name="player">The player.</param>
+        /// <param name="puzzle">The puzzle.</param>
+        /// <returns>The <see cref="bool"/>.</returns>
         private static bool HandleGuess(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a letter:");
@@ -82,12 +78,11 @@ namespace WheelOfFortune
         }
 
         /// <summary>
-        /// Handles the solve
+        /// Handles the solve.
         /// </summary>
-        /// <param name="player">The player</param>
-        /// <param name="puzzle">The puzzle</param>
-        /// <returns><c>true</c> if the guess was successful; otherwise, <c>false</c></returns>
-        /// <exception cref="ApplicationException">Raised when the game is over</exception>
+        /// <param name="player">The player.</param>
+        /// <param name="puzzle">The puzzle.</param>
+        /// <returns><c>true</c> if the guess was successful; otherwise, <c>false</c>.</returns>
         private static bool HandleSolve(Player player, Puzzle puzzle)
         {
             Console.WriteLine("Please enter a word/phrase:");
@@ -122,10 +117,12 @@ namespace WheelOfFortune
             return result;
         }
 
-        /// <summary>Turn orchestrator</summary>
-        /// <param name="player">The player</param>
-        /// <param name="puzzle">The puzzle</param>
-        /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c></returns>
+        /// <summary>
+        /// The HandleTurn.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="puzzle">The puzzle.</param>
+        /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c>.</returns>
         public static bool HandleTurn(Player player, Puzzle puzzle)
         {
             bool successfulGuess;

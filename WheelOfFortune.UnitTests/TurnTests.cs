@@ -1,10 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace WheelOfFortune.UnitTests
+﻿namespace WheelOfFortune.UnitTests
 {
-    [TestClass]
-    class TurnTests
-    {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Defines the <see cref="TurnTests" />.
+    /// </summary>
+    [TestClass]
+internal     class TurnTests
+    {
     }
 }

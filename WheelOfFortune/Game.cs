@@ -1,81 +1,138 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WheelOfFortune
+﻿namespace WheelOfFortune
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Game orchestrator <br/>
+    /// Game orchestrator <br/>.
     /// </summary>
     public class Game
     {
-        private string _welcomeMessage;
-        private List<Player> _players;
-        private int _numberOfPlayers;
+        /// <summary>
+        /// Defines the WelcomeMessage.
+        /// </summary>
+        private readonly string WelcomeMessage;
 
+        /// <summary>
+        /// Defines the Players.
+        /// </summary>
+        private readonly List<Player> Players;
+
+        /// <summary>
+        /// Defines the NumberOfPlayers.
+        /// </summary>
+        private int NumberOfPlayers;
+
+        /// <summary>
+        /// Gets the MaxNumberOfPlayers.
+        /// </summary>
+        public int MaxNumberOfPlayers { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
         public Game()
         {
-            _welcomeMessage = " ===== Welcome to Wheel of Fortune! =====\n\nYou can type \'quit\' any time to exit the game\n";
-            _players = new List<Player>();
+            WelcomeMessage = " ===== Welcome to Wheel of Fortune! =====\n\nYou can type \'quit\' any time to exit the game\n";
+            Players = new List<Player>();
+            MaxNumberOfPlayers = 5;
         }
 
-        /// <summary>Displays the welcome message.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game"/> class.
+        /// </summary>
+        /// <param name="maxNumberPlayers">The maximum number players.</param>
+        public Game(int maxNumberPlayers) : this()
+        {
+            if (maxNumberPlayers < 1)
+            {
+                throw new ArgumentException("Must be greater than or equal to 1", nameof(maxNumberPlayers));
+            }
+            else
+            {
+                MaxNumberOfPlayers = maxNumberPlayers;
+            }
+        }
+
+        /// <summary>
+        /// The GetWelcomeMessage.
+        /// </summary>
         private void GetWelcomeMessage()
         {
-            // Insert ASCII art here later
-            Console.WriteLine(_welcomeMessage);
+            // TODO: Insert ASCII art here later
+            Console.WriteLine(WelcomeMessage);
         }
 
-        /// <summary>Gets the number of rounds. (Currently not implemented)</summary>
+        /// <summary>
+        /// The GetNumberOfRounds.
+        /// </summary>
+        /// <returns>The <see cref="int"/>.</returns>
         private int GetNumberOfRounds() => 1;
 
-        /// <summary> Gets the number of players and assigns the value to _numberOfPlayers.</summary>
+        /// <summary>
+        /// The GetNumberOfPlayers.
+        /// </summary>
         private void GetNumberOfPlayers()
         {
-            while (true)
+            while (NumberOfPlayers == 0)
             {
-                Console.WriteLine("Please enter the number of players (between 1 and 5)");
-                var userResponse = Utils.CaptureUserInput();
+                if (MaxNumberOfPlayers > 1)
+                {
+                    Console.WriteLine($"Please enter the number of players (between 1 and {MaxNumberOfPlayers})");
+                    var userResponse = Utils.CaptureUserInput();
+                    Int32.TryParse(userResponse, out NumberOfPlayers);
 
-                Int32.TryParse(userResponse, out _numberOfPlayers);
-
-                if (_numberOfPlayers < 1 || _numberOfPlayers > 5)
-                    Console.WriteLine("Sorry, invalid input.");
+                    if (NumberOfPlayers < 1 || NumberOfPlayers > MaxNumberOfPlayers)
+                    {
+                        Console.WriteLine("Sorry, incorrect input");
+                        NumberOfPlayers = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 else
-                    break;
+                {
+                    NumberOfPlayers = MaxNumberOfPlayers;
+                }
             }
-
         }
 
-        /// <summary>Adds players to the _players based on _numberOfPlayers.</summary>
+        /// <summary>
+        /// The AddPlayers.
+        /// </summary>
         private void AddPlayers()
         {
-            for (int i = 0; i < _numberOfPlayers; i++)
+            for (int i = 0; i < NumberOfPlayers; i++)
             {
-                AddPlayer(i+1);
+                this.AddPlayer(i + 1);
             }
             Console.WriteLine($"Hello {GetPlayerNames()}\n");
         }
 
-        /// <summary>Prompts user to enter player name and creates new instance of Player</summary>
+        /// <summary>
+        /// The AddPlayer.
+        /// </summary>
+        /// <param name="playerNumber">The playerNumber<see cref="int"/>.</param>
         private void AddPlayer(int playerNumber)
         {
             Console.Write($"Player {playerNumber}, enter your name: ");
 
             string name = Utils.CaptureUserInput();
             Player newPlayer = string.IsNullOrWhiteSpace(name) ? new Player() : new Player(name);
-            _players.Add(newPlayer);
-
+            Players.Add(newPlayer);
         }
 
-        /// <summary>Returns the string of all player names separated by comma</summary>
+        /// <summary>
+        /// The GetPlayerNames.
+        /// </summary>
+        /// <returns>The <see cref="string"/>.</returns>
         private string GetPlayerNames()
         {
             var output = new List<string>();
 
-            foreach (Player player in _players)
+            foreach (Player player in Players)
             {
                 output.Add(player.Name);
             }
@@ -83,14 +140,16 @@ namespace WheelOfFortune
             return (string.Join(", ", output));
         }
 
-        /// <summary>Starts the game</summary>
+        /// <summary>
+        /// The Start.
+        /// </summary>
         public void Start()
         {
             try
             {
-                GetWelcomeMessage();
-                GetNumberOfPlayers();
-                AddPlayers();
+                this.GetWelcomeMessage();
+                this.GetNumberOfPlayers();
+                this.AddPlayers();
 
                 var puzzle = new Puzzle();
                 Console.WriteLine("Here's your puzzle:");
@@ -98,11 +157,13 @@ namespace WheelOfFortune
 
                 while (!puzzle.IsSolved())
                 {
-                    foreach (Player player in _players)
+                    foreach (Player player in Players)
                     {
                         bool successfulGuess = true;
                         while (successfulGuess)
+                        {
                             successfulGuess = Turn.HandleTurn(player, puzzle);
+                        }
                     }
                 }
             }
@@ -112,6 +173,5 @@ namespace WheelOfFortune
                 Console.ReadLine();
             }
         }
-
     }
 }

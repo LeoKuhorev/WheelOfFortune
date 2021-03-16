@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WheelOfFortune
+﻿namespace WheelOfFortune
 {
     /// <summary>
-    /// Handles Wheel (Currently not implemented)
+    /// Handles Wheel (Currently not implemented).
     /// </summary>
-    class Wheel
+    internal class Wheel
     {
+        /// <summary>
+        /// Defines the _pool.
+        /// </summary>
         private int[] _pool;
+
+        /// <summary>
+        /// The Spin.
+        /// </summary>
+        /// <returns>The <see cref="int"/>.</returns>
         public int Spin()
         {
             return 100;
         }
-
     }
 }
