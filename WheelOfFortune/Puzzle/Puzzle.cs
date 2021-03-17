@@ -1,8 +1,6 @@
 ﻿namespace WheelOfFortune
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
 
     /// <summary>
     /// Defines the <see cref="Puzzle" />.
@@ -14,6 +12,7 @@
         /// </summary>
         /// <returns><c>true</c> if the puzzle is solved; otherwise, <c>false</c>.</returns>
         public bool IsSolved() => _isSolved;
+
         /// <summary>
         /// Defines the PuzzlePhrase.
         /// </summary>

@@ -1,32 +1,29 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace WheelOfFortune.UnitTests
+﻿namespace WheelOfFortune.UnitTests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// Defines the <see cref="RoundTests" />.
+    /// </summary>
     [TestClass]
-    class RoundTests
+    internal class RoundTests
     {
+        /// <summary>
+        /// The Round_EmptyInput_InvalidInput.
+        /// </summary>
         [TestMethod]
         // MethodName_Scenario_ExpectedBehavior (ex. CanBeCancelledBy_UserIsAdmin_ReturnsTrue)
         public void Round_EmptyInput_InvalidInput()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-
         }
 
+        /// <summary>
+        /// The Round_ThreeRoundsInput_ThreeRounds.
+        /// </summary>
         [TestMethod]
         // MethodName_Scenario_ExpectedBehavior (ex. CanBeCancelledBy_UserIsAdmin_ReturnsTrue)
         public void Round_ThreeRoundsInput_ThreeRounds()
         {
-            // Arrange
-
-            // Act
-
-            // Assert
-
         }
     }
 }

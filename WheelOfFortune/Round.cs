@@ -30,11 +30,6 @@
         private readonly List<Player> Players;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Round"/> class.
-        /// </summary>
-        /// <param name="players">The players<see cref="List{Player}"/>.</param>
-        
-        /// <summary>
         /// Defines the PhraseGenerator.
         /// </summary>
         private readonly IPhraseGenerator PhraseGenerator;
@@ -44,6 +39,12 @@
         /// </summary>
         private readonly ICaptureInput CaptureInput;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Round"/> class.
+        /// </summary>
+        /// <param name="players">The players<see cref="List{Player}"/>.</param>
+        /// <param name="phraseGenerator">The phraseGenerator<see cref="IPhraseGenerator"/>.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         public Round(List<Player> players, IPhraseGenerator phraseGenerator, ICaptureInput captureInput)
         {
             this.MaxNumberOfRounds = 3;
@@ -78,41 +79,36 @@
         /// <summary>
         /// The RoundFlow.
         /// </summary>
-        public void RoundFlow()
+        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
+        public void RoundFlow(Wheel wheel)
         {
-            try
+            this.GetNumberOfRounds();
+            while (this.RoundNumber != this.NumberOfRounds)
             {
-                this.GetNumberOfRounds();
-                while (this.RoundNumber != this.NumberOfRounds)
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine($"\nPlayers! Get ready for round {this.RoundNumber + 1}\n");
+                Console.ResetColor();
+
+                var puzzle = new Puzzle(this.PhraseGenerator);
+                Console.WriteLine("Here's your puzzle:");
+                Console.WriteLine(puzzle.DisplayPhrase());
+
+                bool successfullSolve = puzzle.IsSolved();
+                while (!successfullSolve)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine($"\nPlayers! Get ready for round {this.RoundNumber + 1}\n");
-                    Console.ResetColor();
-
-                    var puzzle = new Puzzle(this.PhraseGenerator);
-                    Console.WriteLine("Here's your puzzle:");
-                    Console.WriteLine(puzzle.DisplayPhrase());
-
-                    bool successfullSolve = puzzle.IsSolved();
-                    while (!successfullSolve)
+                    foreach (Player player in Players)
                     {
-                        foreach (Player player in Players)
+                        bool successfulGuess = true;
+                        while (successfulGuess && !successfullSolve)
                         {
-                            bool successfulGuess = true;
-                            while (successfulGuess && !successfullSolve)
-                            {
-                                successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput);
-                                successfullSolve = puzzle.IsSolved();
-                            };
-                        }
+                            successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput, wheel);
+                            successfullSolve = puzzle.IsSolved();
+                        };
                     }
-                    this.IncrementRound();
                 }
+                this.IncrementRound();
             }
-            catch (ApplicationException)
-            {
-                Console.WriteLine("Game Over!\nThank you for playing!\nPress ENTER to end the game.");
-            }
+            throw new ApplicationException();
         }
     }
 }

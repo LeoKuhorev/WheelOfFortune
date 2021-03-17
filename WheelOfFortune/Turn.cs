@@ -13,15 +13,15 @@
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
-        /// <returns><c>"L"</c> if the user wants to guess a letter; <c>"S"</c> if the user wants to solve the puzzle.</returns>
+        /// <returns><c>"W"</c> if the user wants to spin the wheel; <c>"S"</c> if the user wants to solve the puzzle.</returns>
         private static string GetPlayerSelection(Player player, ICaptureInput captureInput)
         {
-            Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L/S):");
+            Console.WriteLine($"{player.Name}, do you want to Spin the [W]heel or [S]olve the puzzle? (W/S):");
             string playerInput = captureInput.CaptureInput();
 
-            while (!string.Equals("L", playerInput) && !string.Equals("S", playerInput))
+            while (!string.Equals("W", playerInput) && !string.Equals("S", playerInput))
             {
-                Console.WriteLine("Sorry, not a valid option. Please enter [L] to guess a letter or [S] to solve the puzzle.");
+                Console.WriteLine("Sorry, not a valid option. Please enter [W] to spin the wheel or [S] to solve the puzzle.");
                 playerInput = captureInput.CaptureInput();
             }
 
@@ -34,8 +34,9 @@
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
+        /// <param name="spinResult">The $ amount of the spin.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        private static bool HandleGuess(Player player, Puzzle puzzle, ICaptureInput captureInput)
+        private static bool HandleGuess(Player player, Puzzle puzzle, ICaptureInput captureInput, int spinResult)
         {
             Console.WriteLine("Please enter a letter:");
             string playerInput = captureInput.CaptureInput();
@@ -54,10 +55,12 @@
                 if (result == 1)
                 {
                     Console.WriteLine($"There is 1 {playerInput}.");
+                    // player.RoundScore += spinResult;
                 }
                 else
                 {
                     Console.WriteLine($"There are {result} {playerInput}s.");
+                    // player.RoundScore += (result * spinResult);
                 }
                 Console.ResetColor();
             }
@@ -89,7 +92,7 @@
         /// <returns><c>true</c> if the guess was successful; otherwise, <c>false</c>.</returns>
         private static bool HandleSolve(Player player, Puzzle puzzle, ICaptureInput captureInput)
         {
-            Console.WriteLine("Please enter a word/phrase:");
+            Console.WriteLine("Please enter your guess:");
             string playerInput = captureInput.CaptureInput();
 
             while (string.IsNullOrEmpty(playerInput))
@@ -123,15 +126,17 @@
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
+        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
         /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c>.</returns>
-        public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput)
+        public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput, Wheel wheel)
         {
             bool successfulGuess;
             string playerSelection = GetPlayerSelection(player, captureInput);
 
-            if (playerSelection == "L")
+            if (playerSelection == "W")
             {
-                successfulGuess = HandleGuess(player, puzzle, captureInput);
+                //successfulGuess = HandleGuess(player, puzzle);
+                successfulGuess = HandleSpin(player, puzzle, captureInput, wheel);
             }
             else
             {
@@ -139,6 +144,35 @@
             }
 
             return successfulGuess;
+        }
+
+        /// <summary>
+        /// The HandleSpin.
+        /// </summary>
+        /// <param name="player">The player<see cref="Player"/>.</param>
+        /// <param name="puzzle">The puzzle<see cref="Puzzle"/>.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
+        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
+        /// <returns>The <see cref="bool"/>.</returns>
+        private static bool HandleSpin(Player player, Puzzle puzzle, ICaptureInput captureInput, Wheel wheel)
+        {
+            int spinResult = wheel.Spin();
+            if (spinResult == -1)
+            {
+                Console.WriteLine("Spin result: Bankrupt");
+                // player.RoundScore = 0;
+                return false;
+            }
+            else if (spinResult == 0)
+            {
+                Console.WriteLine("Spin result: Lose A Turn");
+                return false;
+            }
+            else
+            {
+                Console.WriteLine($"Spin result: ${spinResult}");
+                return HandleGuess(player, puzzle, captureInput, spinResult);
+            }
         }
     }
 }

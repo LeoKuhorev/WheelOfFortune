@@ -142,9 +142,9 @@
                 this.GetWelcomeMessage();
                 this.SetNumberOfPlayers();
                 this.AddPlayers();
-
+                var wheel = new Wheel();
                 Round round = new Round(Players, this.PhraseGenerator, this.CaptureInput);
-                round.RoundFlow();
+                round.RoundFlow(wheel);
             }
             catch (ApplicationException)
             {

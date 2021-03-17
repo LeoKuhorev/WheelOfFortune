@@ -9,7 +9,7 @@
     public class PhraseGeneratorTests
     {
         /// <summary>
-        /// Defines the _puzzle.
+        /// Defines the phraseGenerator.
         /// </summary>
         private PhraseGenerator phraseGenerator;
 
@@ -39,7 +39,7 @@
                     isEmpty = true;
                 }
             }
-            
+
             // Assert
             Assert.IsFalse(isEmpty);
         }

@@ -1,7 +1,6 @@
 ﻿namespace WheelOfFortune.UnitTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -26,6 +25,11 @@
         private Puzzle _puzzle;
 
         /// <summary>
+        /// Defines the _wheel.
+        /// </summary>
+        private Wheel _wheel;
+
+        /// <summary>
         /// The SetUp.
         /// </summary>
         [TestInitialize]
@@ -34,6 +38,7 @@
             _player = new Player();
             _fakeCaptureInput = new FakeInputUtils();
             _puzzle = new Puzzle(new FakePhraseGenerator());
+            _wheel = new Wheel();
         }
 
         /// <summary>
@@ -42,10 +47,10 @@
         [TestMethod]
         public void HandleTurn_PlayerChoosesToGuessLetterAndEntersCorrect_ReturnsTrue()
         {
-            var sequenceOfActions = new List<string>() { "L", "M" };
+            var sequenceOfActions = new List<string>() { "W", "M" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
-            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput);
+            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);
 
             Assert.IsTrue(result);
         }
@@ -56,10 +61,10 @@
         [TestMethod]
         public void HandleTurn_PlayerChoosesToGuessLetterAndEntersIncorrect_ReturnsFalse()
         {
-            var sequenceOfActions = new List<string>() { "L", "Z" };
+            var sequenceOfActions = new List<string>() { "W", "Z" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
-            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput);
+            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);
 
             Assert.IsFalse(result);
         }
@@ -70,10 +75,10 @@
         [TestMethod]
         public void HandleTurn_PlayerEnterIncorrectOptionThenChoosesToGuessLetterAndEntersCorrect_ReturnsTrue()
         {
-            var sequenceOfActions = new List<string>() { "Z", "L", "M" };
+            var sequenceOfActions = new List<string>() { "Z", "W", "M" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
-            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput);
+            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);
 
             Assert.IsTrue(result);
         }
@@ -82,13 +87,14 @@
         /// The HandleTurn_PlayerChoosesToSolvePuzzleAndEntersCorrect_ThrowsException.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void HandleTurn_PlayerChoosesToSolvePuzzleAndEntersCorrect_ThrowsException()
+        public void HandleTurn_PlayerChoosesToSolvePuzzleAndEntersCorrect_ReturnsTrue()
         {
             var sequenceOfActions = new List<string>() { "S", "Microsoft Leap" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
-            Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput);
+            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);
+
+            Assert.IsTrue(result);
         }
 
         /// <summary>
@@ -100,7 +106,7 @@
             var sequenceOfActions = new List<string>() { "S", "Microsoft" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
-            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput);
+            bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);
 
             Assert.IsFalse(result);
         }
