@@ -1,6 +1,8 @@
 ﻿namespace WheelOfFortune
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Defines the <see cref="Puzzle" />.
