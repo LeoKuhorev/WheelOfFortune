@@ -1,20 +1,20 @@
-﻿namespace WheelOfFortune
+﻿namespace WheelOfFortune.Utils
 {
     using System;
 
     /// <summary>
-    /// Defines the <see cref="Utils" />.
+    /// Defines the <see cref="InputUtils" />.
     /// </summary>
-    internal class Utils
+    public class InputUtils : ICaptureInput
     {
         /// <summary>
         /// Captures the user input, brings it to uppercase and trims extra whitespace.
         /// </summary>
         /// <returns>Formatted user input.</returns>
-        public static string CaptureUserInput()
+        public string CaptureInput()
         {
             string playerInput = Console.ReadLine().ToUpper().Trim();
-            HandleQuit(playerInput);
+            this.HandleQuit(playerInput);
 
             return playerInput;
         }
@@ -23,7 +23,7 @@
         /// Handles the game quit.
         /// </summary>
         /// <param name="playerInput">The player input.</param>
-        public static void HandleQuit(string playerInput)
+        private void HandleQuit(string playerInput)
         {
             if (playerInput == "QUIT")
                 throw new ApplicationException();

@@ -8,14 +8,14 @@
     public class Puzzle
     {
         /// <summary>
-        /// Defines the _puzzlePhrase.
+        /// Defines the PuzzlePhrase.
         /// </summary>
-        private string _puzzlePhrase;
+        private string PuzzlePhrase;
 
         /// <summary>
-        /// Defines the _guessedLetters.
+        /// Defines the GuessedLetters.
         /// </summary>
-        private Dictionary<char, bool> _guessedLetters;
+        private Dictionary<char, bool> GuessedLetters;
 
         /// <summary>
         /// Defines the _isSolved.
@@ -25,20 +25,21 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Puzzle"/> class.
         /// </summary>
-        public Puzzle()
+        /// <param name="phraseGenerator">The phraseGenerator<see cref="IPhraseGenerator"/>.</param>
+        public Puzzle(IPhraseGenerator phraseGenerator)
         {
-            _guessedLetters = new Dictionary<char, bool>();
-            _isSolved = false;
-            GeneratePuzzle();
+            GuessedLetters = new Dictionary<char, bool>();
+            GeneratePuzzle(phraseGenerator);
             GenerateGuessedLetters();
         }
 
         /// <summary>
         /// The GeneratePuzzle.
         /// </summary>
-        private void GeneratePuzzle()
+        /// <param name="phraseGenerator">The phraseGenerator<see cref="IPhraseGenerator"/>.</param>
+        private void GeneratePuzzle(IPhraseGenerator phraseGenerator)
         {
-            _puzzlePhrase = "Microsoft Leap".ToUpper();
+            PuzzlePhrase = phraseGenerator.Generate();
         }
 
         /// <summary>
@@ -46,8 +47,8 @@
         /// </summary>
         private void GenerateGuessedLetters()
         {
-            foreach (char c in _puzzlePhrase)
-                _guessedLetters[c] = false;
+            foreach (char c in PuzzlePhrase)
+                GuessedLetters[c] = false;
         }
 
         /// <summary>
@@ -57,12 +58,16 @@
         public string DisplayPhrase()
         {
             string output = "";
-            foreach (char c in _puzzlePhrase)
+            foreach (char c in PuzzlePhrase)
             {
-                if (_guessedLetters[c] || !char.IsLetter(c))
+                if (GuessedLetters[c] || !char.IsLetter(c))
+                {
                     output += c;
+                }
                 else
+                {
                     output += "-";
+                }
             }
             return $"\n{output}\n";
         }
@@ -74,12 +79,14 @@
         /// <returns>Whether or not the guess is correct.</returns>
         public bool PhraseMatches(string guess)
         {
-            bool success = _puzzlePhrase == guess.ToUpper();
+            bool success = PuzzlePhrase == guess.ToUpper();
 
             if (success)
             {
-                foreach (var key in _guessedLetters.Keys)
-                    _guessedLetters[key] = true;
+                foreach (var key in GuessedLetters.Keys)
+                {
+                    GuessedLetters[key] = true;
+                }
 
                 _isSolved = true;
             }
@@ -97,14 +104,18 @@
             guess = char.ToUpper(guess);
             var count = 0;
 
-            foreach (char c in _puzzlePhrase)
+            foreach (char c in PuzzlePhrase)
             {
-                if (c == guess && char.IsLetter(guess) && !_guessedLetters[guess])
+                if (c == guess && char.IsLetter(guess) && !GuessedLetters[guess])
+                {
                     count++;
+                }
             }
 
             if (count > 0)
-                _guessedLetters[guess] = true;
+            {
+                GuessedLetters[guess] = true;
+            }
 
 
             return count;

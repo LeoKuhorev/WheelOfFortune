@@ -1,6 +1,7 @@
 ﻿namespace WheelOfFortune
 {
     using System;
+    using WheelOfFortune.Utils;
 
     /// <summary>
     /// Defines the <see cref="Turn" />.
@@ -11,16 +12,17 @@
         /// Gets the player selection.
         /// </summary>
         /// <param name="player">The player.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         /// <returns><c>"L"</c> if the user wants to guess a letter; <c>"S"</c> if the user wants to solve the puzzle.</returns>
-        private static string GetPlayerSelection(Player player)
+        private static string GetPlayerSelection(Player player, ICaptureInput captureInput)
         {
             Console.WriteLine($"{player.Name}, do you want to guess a [L]etter or [S]olve the puzzle? (L/S):");
-            string playerInput = Utils.CaptureUserInput();
+            string playerInput = captureInput.CaptureInput();
 
             while (!string.Equals("L", playerInput) && !string.Equals("S", playerInput))
             {
                 Console.WriteLine("Sorry, not a valid option. Please enter [L] to guess a letter or [S] to solve the puzzle.");
-                playerInput = Utils.CaptureUserInput();
+                playerInput = captureInput.CaptureInput();
             }
 
             return playerInput;
@@ -31,16 +33,17 @@
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        private static bool HandleGuess(Player player, Puzzle puzzle)
+        private static bool HandleGuess(Player player, Puzzle puzzle, ICaptureInput captureInput)
         {
             Console.WriteLine("Please enter a letter:");
-            string playerInput = Utils.CaptureUserInput();
+            string playerInput = captureInput.CaptureInput();
 
             while (playerInput.Length > 1 || string.IsNullOrEmpty(playerInput))
             {
                 Console.WriteLine("Invalid entry, please try again.");
-                playerInput = Utils.CaptureUserInput();
+                playerInput = captureInput.CaptureInput();
             }
 
             int result = puzzle.GetNumberOfMatches(char.Parse(playerInput));
@@ -82,16 +85,17 @@
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         /// <returns><c>true</c> if the guess was successful; otherwise, <c>false</c>.</returns>
-        private static bool HandleSolve(Player player, Puzzle puzzle)
+        private static bool HandleSolve(Player player, Puzzle puzzle, ICaptureInput captureInput)
         {
             Console.WriteLine("Please enter a word/phrase:");
-            string playerInput = Utils.CaptureUserInput();
+            string playerInput = captureInput.CaptureInput();
 
             while (string.IsNullOrEmpty(playerInput))
             {
                 Console.WriteLine("Invalid entry, please try again.");
-                playerInput = Utils.CaptureUserInput();
+                playerInput = captureInput.CaptureInput();
             }
 
             bool result = puzzle.PhraseMatches(playerInput);
@@ -122,19 +126,20 @@
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c>.</returns>
-        public static bool HandleTurn(Player player, Puzzle puzzle)
+        public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput)
         {
             bool successfulGuess;
-            string playerSelection = GetPlayerSelection(player);
+            string playerSelection = GetPlayerSelection(player, captureInput);
 
             if (playerSelection == "L")
             {
-                successfulGuess = HandleGuess(player, puzzle);
+                successfulGuess = HandleGuess(player, puzzle, captureInput);
             }
             else
             {
-                successfulGuess = HandleSolve(player, puzzle);
+                successfulGuess = HandleSolve(player, puzzle, captureInput);
             }
 
             return successfulGuess;

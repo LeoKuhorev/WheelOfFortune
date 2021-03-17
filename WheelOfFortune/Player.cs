@@ -6,7 +6,7 @@
     public class Player
     {
         /// <summary>
-        /// The name...
+        /// The name....
         /// </summary>
         public string Name;
 

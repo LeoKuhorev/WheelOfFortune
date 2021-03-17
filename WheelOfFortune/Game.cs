@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using WheelOfFortune.Utils;
 
     /// <summary>
     /// Game orchestrator <br/>.
@@ -24,34 +25,31 @@
         private int NumberOfPlayers;
 
         /// <summary>
-        /// Gets the MaxNumberOfPlayers.
+        /// Gets or sets the MaxNumberOfPlayers.
         /// </summary>
-        public int MaxNumberOfPlayers { get; }
+        public int MaxNumberOfPlayers { get; set; } = 5;
+
+        /// <summary>
+        /// Defines the PhraseGenerator.
+        /// </summary>
+        private readonly IPhraseGenerator PhraseGenerator;
+
+        /// <summary>
+        /// Defines the CaptureInput.
+        /// </summary>
+        private readonly ICaptureInput CaptureInput;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
-        public Game()
+        /// <param name="phraseGenerator">The phraseGenerator<see cref="IPhraseGenerator"/>.</param>
+        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
+        public Game(IPhraseGenerator phraseGenerator, ICaptureInput captureInput)
         {
             WelcomeMessage = " ===== Welcome to Wheel of Fortune! =====\n\nYou can type \'quit\' any time to exit the game\n";
             Players = new List<Player>();
-            MaxNumberOfPlayers = 5;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Game"/> class.
-        /// </summary>
-        /// <param name="maxNumberPlayers">The maximum number players.</param>
-        public Game(int maxNumberPlayers) : this()
-        {
-            if (maxNumberPlayers < 1)
-            {
-                throw new ArgumentException("Must be greater than or equal to 1", nameof(maxNumberPlayers));
-            }
-            else
-            {
-                MaxNumberOfPlayers = maxNumberPlayers;
-            }
+            PhraseGenerator = phraseGenerator;
+            CaptureInput = captureInput;
         }
 
         /// <summary>
@@ -72,14 +70,14 @@
         /// <summary>
         /// The GetNumberOfPlayers.
         /// </summary>
-        private void GetNumberOfPlayers()
+        private void SetNumberOfPlayers()
         {
             while (NumberOfPlayers == 0)
             {
                 if (MaxNumberOfPlayers > 1)
                 {
                     Console.WriteLine($"Please enter the number of players (between 1 and {MaxNumberOfPlayers})");
-                    var userResponse = Utils.CaptureUserInput();
+                    var userResponse = this.CaptureInput.CaptureInput();
                     Int32.TryParse(userResponse, out NumberOfPlayers);
 
                     if (NumberOfPlayers < 1 || NumberOfPlayers > MaxNumberOfPlayers)
@@ -119,7 +117,7 @@
         {
             Console.Write($"Player {playerNumber}, enter your name: ");
 
-            string name = Utils.CaptureUserInput();
+            string name = this.CaptureInput.CaptureInput();
             Player newPlayer = string.IsNullOrWhiteSpace(name) ? new Player() : new Player(name);
             Players.Add(newPlayer);
         }
@@ -148,10 +146,10 @@
             try
             {
                 this.GetWelcomeMessage();
-                this.GetNumberOfPlayers();
+                this.SetNumberOfPlayers();
                 this.AddPlayers();
 
-                var puzzle = new Puzzle();
+                var puzzle = new Puzzle(PhraseGenerator);
                 Console.WriteLine("Here's your puzzle:");
                 Console.WriteLine(puzzle.DisplayPhrase());
 
@@ -162,7 +160,7 @@
                         bool successfulGuess = true;
                         while (successfulGuess)
                         {
-                            successfulGuess = Turn.HandleTurn(player, puzzle);
+                            successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput);
                         }
                     }
                 }

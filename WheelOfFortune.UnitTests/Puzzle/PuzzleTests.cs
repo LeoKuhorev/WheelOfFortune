@@ -9,6 +9,20 @@ namespace WheelOfFortune.UnitTests
     public class PuzzleTests
     {
         /// <summary>
+        /// Defines the _puzzle.
+        /// </summary>
+        private Puzzle _puzzle;
+
+        /// <summary>
+        /// The SetUp.
+        /// </summary>
+        [TestInitialize]
+        public void SetUp()
+        {
+            _puzzle = new Puzzle(new FakePhraseGenerator());
+        }
+
+        /// <summary>
         /// The DisplayPhrase_NoGuessedLetters_DisplaysDashes.
         /// </summary>
         [TestMethod]
@@ -16,11 +30,11 @@ namespace WheelOfFortune.UnitTests
         public void DisplayPhrase_NoGuessedLetters_DisplaysDashes()
         {
             // Arrange
-            var puzzle = new Puzzle();
+
             // Act
-            var outputString = puzzle.DisplayPhrase();
+            var outputString = _puzzle.DisplayPhrase();
             // Assert
-            Assert.AreEqual(outputString, "--------- ----");
+            Assert.AreEqual(outputString, "\n--------- ----\n");
         }
 
         /// <summary>
@@ -29,12 +43,10 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void DisplayPhrase_TwoGuessedLetters_DisplaysDashesAndLetters()
         {
-            var puzzle = new Puzzle();
+            _puzzle.GetNumberOfMatches('O');
+            var outputString = _puzzle.DisplayPhrase();
 
-            puzzle.GetNumberOfMatches('O');
-            var outputString = puzzle.DisplayPhrase();
-
-            Assert.AreEqual(outputString, "----O-O-- ----");
+            Assert.AreEqual(outputString, "\n----O-O-- ----\n");
         }
 
         /// <summary>
@@ -43,12 +55,10 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void DisplayPhrase_AllLettersGuessed_DisplaysAllLetters()
         {
-            var puzzle = new Puzzle();
+            _puzzle.PhraseMatches("microsoft lEAp");
+            var outputString = _puzzle.DisplayPhrase();
 
-            puzzle.PhraseMatches("microsoft lEAp");
-            var outputString = puzzle.DisplayPhrase();
-
-            Assert.AreEqual(outputString, "MICROSOFT LEAP");
+            Assert.AreEqual(outputString, "\nMICROSOFT LEAP\n");
         }
 
         /// <summary>
@@ -57,9 +67,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void GetNumberOfMatches_PassingMatchingLettersUppercase_ReturnsTwo()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.GetNumberOfMatches('O');
+            var actualOutput = _puzzle.GetNumberOfMatches('O');
 
             Assert.AreEqual(actualOutput, 2);
         }
@@ -70,9 +78,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void GetNumberOfMatches_PassingMatchingLettersLowercase_ReturnsTwo()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.GetNumberOfMatches('s');
+            var actualOutput = _puzzle.GetNumberOfMatches('s');
 
             Assert.AreEqual(actualOutput, 1);
         }
@@ -83,9 +89,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void GetNumberOfMatches_PassingNonMatchingLetters_ReturnsZero()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.GetNumberOfMatches('d');
+            var actualOutput = _puzzle.GetNumberOfMatches('d');
 
             Assert.AreEqual(actualOutput, 0);
         }
@@ -96,9 +100,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void GetNumberOfMatches_PassingSpace_ReturnsZero()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.GetNumberOfMatches(' ');
+            var actualOutput = _puzzle.GetNumberOfMatches(' ');
 
             Assert.AreEqual(actualOutput, 0);
         }
@@ -109,9 +111,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void PhraseMatches_PassingCorrectPhraseUppercase_ReturnsTrue()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.PhraseMatches("MICROSOFT LEAP");
+            var actualOutput = _puzzle.PhraseMatches("MICROSOFT LEAP");
 
             Assert.AreEqual(actualOutput, true);
         }
@@ -122,9 +122,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void PhraseMatches_PassingCorrectPhraseLowercase_ReturnsTrue()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.PhraseMatches("microsoft leap");
+            var actualOutput = _puzzle.PhraseMatches("microsoft leap");
 
             Assert.AreEqual(actualOutput, true);
         }
@@ -135,9 +133,7 @@ namespace WheelOfFortune.UnitTests
         [TestMethod]
         public void PhraseMatches_PassingIncorrectPhraseLowercase_ReturnsFalse()
         {
-            var puzzle = new Puzzle();
-
-            var actualOutput = puzzle.PhraseMatches("microsoft_leap");
+            var actualOutput = _puzzle.PhraseMatches("microsoft_leap");
 
             Assert.AreEqual(actualOutput, false);
         }
