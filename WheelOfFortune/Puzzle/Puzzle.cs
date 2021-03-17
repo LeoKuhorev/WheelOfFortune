@@ -8,6 +8,11 @@
     public class Puzzle
     {
         /// <summary>
+        /// The IsSolved.
+        /// </summary>
+        /// <returns><c>true</c> if the puzzle is solved; otherwise, <c>false</c>.</returns>
+        public bool IsSolved() => _isSolved;
+        /// <summary>
         /// Defines the PuzzlePhrase.
         /// </summary>
         private string PuzzlePhrase;
@@ -120,11 +125,5 @@
 
             return count;
         }
-
-        /// <summary>
-        /// The IsSolved.
-        /// </summary>
-        /// <returns><c>true</c> if the puzzle is solved; otherwise, <c>false</c>.</returns>
-        public bool IsSolved() => _isSolved;
     }
 }

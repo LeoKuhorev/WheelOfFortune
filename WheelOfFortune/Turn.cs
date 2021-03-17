@@ -107,7 +107,6 @@
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(puzzle.DisplayPhrase());
                 Console.ResetColor();
-                throw new ApplicationException();
             }
             else
             {
@@ -115,9 +114,6 @@
                 Console.WriteLine("Sorry, that's incorrect.");
                 Console.ResetColor();
             }
-
-            Console.WriteLine(puzzle.DisplayPhrase());
-
             return result;
         }
 

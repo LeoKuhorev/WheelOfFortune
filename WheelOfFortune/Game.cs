@@ -62,12 +62,6 @@
         }
 
         /// <summary>
-        /// The GetNumberOfRounds.
-        /// </summary>
-        /// <returns>The <see cref="int"/>.</returns>
-        private int GetNumberOfRounds() => 1;
-
-        /// <summary>
         /// The GetNumberOfPlayers.
         /// </summary>
         private void SetNumberOfPlayers()
@@ -149,21 +143,8 @@
                 this.SetNumberOfPlayers();
                 this.AddPlayers();
 
-                var puzzle = new Puzzle(PhraseGenerator);
-                Console.WriteLine("Here's your puzzle:");
-                Console.WriteLine(puzzle.DisplayPhrase());
-
-                while (!puzzle.IsSolved())
-                {
-                    foreach (Player player in Players)
-                    {
-                        bool successfulGuess = true;
-                        while (successfulGuess)
-                        {
-                            successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput);
-                        }
-                    }
-                }
+                Round round = new Round(Players, this.PhraseGenerator, this.CaptureInput);
+                round.RoundFlow();
             }
             catch (ApplicationException)
             {
