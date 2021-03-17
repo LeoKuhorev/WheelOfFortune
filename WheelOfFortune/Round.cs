@@ -17,7 +17,7 @@
         /// <summary>
         /// Gets the MaxNumberOfRounds.
         /// </summary>
-        private int MaxNumberOfRounds { get; }
+        private int MaxNumberOfRounds { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets the RoundNumber.
@@ -47,24 +47,35 @@
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         public Round(List<Player> players, IPhraseGenerator phraseGenerator, ICaptureInput captureInput)
         {
-            this.MaxNumberOfRounds = 3;
             this.Players = players;
             this.PhraseGenerator = phraseGenerator;
             this.CaptureInput = captureInput;
         }
 
-        /// <summary>
-        /// The GetNumberOfRounds.
-        /// </summary>
-        private void GetNumberOfRounds()
+        private void SetNumberOfRounds()
         {
-            Console.WriteLine($"Please enter the number of rounds (between 1 and {MaxNumberOfRounds}) you want to play.");
-            var userResponse = this.CaptureInput.CaptureInput();
-            Int32.TryParse(userResponse, out NumberOfRounds);
-
-            if (NumberOfRounds < 1 || NumberOfRounds > MaxNumberOfRounds)
+            while (NumberOfRounds == 0)
             {
-                Console.WriteLine("Sorry, invalid input");
+                if (MaxNumberOfRounds > 1)
+                {
+                    Console.WriteLine($"Please enter the number of rounds (between 1 and {MaxNumberOfRounds})");
+                    var userResponse = this.CaptureInput.CaptureInput();
+                    Int32.TryParse(userResponse, out NumberOfRounds);
+
+                    if (NumberOfRounds < 1 || NumberOfRounds > MaxNumberOfRounds)
+                    {
+                        Console.WriteLine("Sorry, incorrect input");
+                        NumberOfRounds = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    NumberOfRounds = MaxNumberOfRounds;
+                }
             }
         }
 
@@ -82,7 +93,7 @@
         /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
         public void RoundFlow(Wheel wheel)
         {
-            this.GetNumberOfRounds();
+            this.SetNumberOfRounds();
             while (this.RoundNumber != this.NumberOfRounds)
             {
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;

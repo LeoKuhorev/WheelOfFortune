@@ -17,7 +17,7 @@
             var captureConsoleInput = new InputUtils();
             var game = new Game(phraseGenerator, captureConsoleInput)
             {
-                MaxNumberOfPlayers = 3
+                MaxNumberOfPlayers = 6
             };
 
             game.Start();
