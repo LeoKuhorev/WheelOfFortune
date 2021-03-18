@@ -27,7 +27,7 @@
         /// <summary>
         /// Defines the _wheel.
         /// </summary>
-        private Wheel _wheel;
+        private IWheel _wheel;
 
         /// <summary>
         /// The SetUp.
@@ -38,7 +38,7 @@
             _player = new Player();
             _fakeCaptureInput = new FakeInputUtils();
             _puzzle = new Puzzle(new FakePhraseGenerator());
-            _wheel = new Wheel();
+            _wheel = new FakeWheel();
         }
 
         /// <summary>

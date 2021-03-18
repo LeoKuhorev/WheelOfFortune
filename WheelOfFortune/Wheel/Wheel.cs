@@ -6,7 +6,7 @@
     /// <summary>
     /// Handles Wheel.
     /// </summary>
-    public class Wheel
+    public class Wheel : IWheel
     {
         /// <summary>
         /// Defines the _pool. '-1' is Bankrupt, and '0' is Lose A Turn. 

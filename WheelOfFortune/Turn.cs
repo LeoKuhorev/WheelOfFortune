@@ -128,9 +128,9 @@
         /// <param name="player">The player.</param>
         /// <param name="puzzle">The puzzle.</param>
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
-        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
+        /// <param name="wheel">The wheel<see cref="IWheel"/>.</param>
         /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c>.</returns>
-        public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput, Wheel wheel)
+        public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput, IWheel wheel)
         {
             bool successfulGuess;
             string playerSelection = GetPlayerSelection(player, captureInput);
@@ -154,9 +154,9 @@
         /// <param name="player">The player<see cref="Player"/>.</param>
         /// <param name="puzzle">The puzzle<see cref="Puzzle"/>.</param>
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
-        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
+        /// <param name="wheel">The wheel<see cref="IWheel"/>.</param>
         /// <returns>The <see cref="bool"/>.</returns>
-        private static bool HandleSpin(Player player, Puzzle puzzle, ICaptureInput captureInput, Wheel wheel)
+        private static bool HandleSpin(Player player, Puzzle puzzle, ICaptureInput captureInput, IWheel wheel)
         {
             int spinResult = wheel.Spin();
             if (spinResult == -1)

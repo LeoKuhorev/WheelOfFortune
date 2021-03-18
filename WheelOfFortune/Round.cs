@@ -90,8 +90,8 @@
         /// <summary>
         /// The RoundFlow.
         /// </summary>
-        /// <param name="wheel">The wheel<see cref="Wheel"/>.</param>
-        public void RoundFlow(Wheel wheel)
+        /// <param name="wheel">The wheel<see cref="IWheel"/>.</param>
+        public void RoundFlow(IWheel wheel)
         {
             this.SetNumberOfRounds();
             while (this.RoundNumber != this.NumberOfRounds)
