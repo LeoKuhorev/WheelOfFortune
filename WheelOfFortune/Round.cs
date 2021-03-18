@@ -96,24 +96,27 @@
             this.SetNumberOfRounds();
             while (this.RoundNumber != this.NumberOfRounds)
             {
-                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($"\nPlayers! Get ready for round {this.RoundNumber + 1}\n");
                 Console.ResetColor();
 
                 var puzzle = new Puzzle(this.PhraseGenerator);
+
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("Here's your puzzle:");
                 Console.WriteLine(puzzle.DisplayPhrase());
+                Console.ResetColor();
 
-                bool successfullSolve = puzzle.IsSolved();
-                while (!successfullSolve)
+                bool successfulSolve = puzzle.IsSolved();
+                while (!successfulSolve)
                 {
                     foreach (Player player in Players)
                     {
                         bool successfulGuess = true;
-                        while (successfulGuess && !successfullSolve)
+                        while (successfulGuess && !successfulSolve)
                         {
                             successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput, wheel);
-                            successfullSolve = puzzle.IsSolved();
+                            successfulSolve = puzzle.IsSolved();
                         };
                     }
                 }

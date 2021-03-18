@@ -46,7 +46,12 @@
         /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
         public Game(IPhraseGenerator phraseGenerator, ICaptureInput captureInput)
         {
-            WelcomeMessage = " ===== Welcome to Wheel of Fortune! =====\n\nYou can type \'quit\' any time to exit the game\n";
+            WelcomeMessage =
+                "\n =========== Welcome to Wheel of Fortune! =========== \n" +
+                "\n                  << LEAP EDITION >>                  \n" +
+                "\n        Learn to spell your cohortmates' names!       \n" +
+                "\n (You can type \'quit\' at any time to exit the game) \n" +
+                "\n ==================================================== \n";
             Players = new List<Player>();
             PhraseGenerator = phraseGenerator;
             CaptureInput = captureInput;
@@ -57,8 +62,9 @@
         /// </summary>
         private void GetWelcomeMessage()
         {
-            // TODO: Insert ASCII art here later
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(WelcomeMessage);
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -100,7 +106,7 @@
             {
                 this.AddPlayer(i + 1);
             }
-            Console.WriteLine($"Hello {GetPlayerNames()}\n");
+            Console.WriteLine($"\nHello {GetPlayerNames()}! Let's play Wheel of Fortune!\n");
         }
 
         /// <summary>

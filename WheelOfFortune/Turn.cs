@@ -78,7 +78,9 @@
                 Console.ResetColor();
             }
 
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(puzzle.DisplayPhrase());
+            Console.ResetColor();
 
             return result > 0;
         }
@@ -114,7 +116,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sorry, that's incorrect.");
+                Console.WriteLine("Sorry, that's incorrect.\n");
                 Console.ResetColor();
             }
             return result;
@@ -159,18 +161,24 @@
             int spinResult = wheel.Spin();
             if (spinResult == -1)
             {
-                Console.WriteLine("Spin result: Bankrupt");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Spin result: Bankrupt\n");
+                Console.ResetColor();
                 // player.RoundScore = 0;
                 return false;
             }
             else if (spinResult == 0)
             {
-                Console.WriteLine("Spin result: Lose A Turn");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Spin result: Lose A Turn\n");
+                Console.ResetColor();
                 return false;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine($"Spin result: ${spinResult}");
+                Console.ResetColor();
                 return HandleGuess(player, puzzle, captureInput, spinResult);
             }
         }
