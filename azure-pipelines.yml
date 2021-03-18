@@ -28,20 +28,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'   
-    
-- task: VSTest@2
-  inputs:
-    testSelector: 'testRun'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-
-
+    arguments: '--configuration $(buildConfiguration)'  
