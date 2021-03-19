@@ -25,6 +25,8 @@
         /// </summary>
         private List<Player> Players;
 
+        private LinkedList<Player> LLPlayers;
+
         /// <summary>
         /// Defines the PhraseGenerator.
         /// </summary>
@@ -46,6 +48,13 @@
             this.Players = players;
             this.PhraseGenerator = phraseGenerator;
             this.CaptureInput = captureInput;
+
+            LLPlayers = new LinkedList<Player>();
+            foreach (var player in Players)
+            {
+                var node = new LinkedListNode<Player>(player);
+                LLPlayers.AddLast(node);
+            }
         }
 
         /// <summary>
@@ -99,6 +108,7 @@
         public void RoundFlow(IWheel wheel, int maxNumberOfRounds)
         {
             this.SetNumberOfRounds(maxNumberOfRounds);
+            var currentPlayer = LLPlayers.First;
             while (this.RoundNumber != this.NumberOfRounds)
             {
                 if (!Console.IsOutputRedirected)
@@ -123,14 +133,16 @@
                 bool successfulSolve = puzzle.IsSolved();
                 while (!successfulSolve)
                 {
-                    foreach (Player player in Players)
+                    bool successfulGuess = true;
+                    while (successfulGuess && !successfulSolve)
                     {
-                        bool successfulGuess = true;
-                        while (successfulGuess && !successfulSolve)
-                        {
-                            successfulGuess = Turn.HandleTurn(player, puzzle, this.CaptureInput, wheel);
-                            successfulSolve = puzzle.IsSolved();
-                        };
+                        successfulGuess = Turn.HandleTurn(currentPlayer.Value, puzzle, this.CaptureInput, wheel);
+                        successfulSolve = puzzle.IsSolved();
+                    };
+
+                    if (!successfulSolve)
+                    {
+                        currentPlayer = currentPlayer.Next ?? LLPlayers.First;
                     }
                 }
                 this.IncrementRound();
