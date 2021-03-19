@@ -143,7 +143,8 @@
             Player winner = Players.Aggregate((p1, p2) => p1.GameScore.GetBalance() > p2.GameScore.GetBalance() ? p1 : p2);
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Congrats {winner.Name}, you won the game with ${winner.GameScore.GetBalance()}!");
+            Console.WriteLine($"Congrats {winner.Name}, you won the game with ${winner.GameScore.GetBalance()}!\n");
+            Console.ResetColor();
 
             throw new ApplicationException();
         }

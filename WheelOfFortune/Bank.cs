@@ -11,15 +11,20 @@
         private int Score;
 
         /// <summary>
-        /// The AddAmount.
+        /// The AddAmount. If a player solves the puzzle 
+        /// with no money, they will win $1000. 
         /// </summary>
         /// <param name="amount">The amount<see cref="int"/>.</param>
         /// <returns>The <see cref="int"/>.</returns>
         public int AddAmount(int amount)
         {
-            if (amount >= 0)
+            if (amount > 0)
             {
                 Score += amount;
+            }
+            else if (amount == 0)
+            {
+                Score += 1000;
             }
 
             return Score;

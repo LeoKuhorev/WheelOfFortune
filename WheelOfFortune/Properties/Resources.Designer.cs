@@ -81,7 +81,7 @@ namespace WheelOfFortune.Properties {
         ///Kristi Gordon,
         ///Kristina Tae,
         ///Leo Kukharau,
-        ///Lune Campos,
+        ///Luna Campos,
         ///Marella Cruz,
         ///Margarita Kalacheva,
         ///Maria Wissler,

@@ -183,8 +183,8 @@
                 }
 
                 player.RoundScore.Reset();
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"{player.Name}, Your spin result: Bankrupt, you lost all your Round money!");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"{player.Name}, Your spin result: Bankrupt. You lost all your round money!");
                 Console.ResetColor();
                 return false;
             }
@@ -195,15 +195,15 @@
                     Console.Clear();
                 }
 
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"{player.Name}, Your spin result: Lose A Turn\n");
                 Console.ResetColor();
                 return false;
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine($"Spin result: ${spinResult}");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Your spin result: ${spinResult}");
                 Console.ResetColor();
                 return HandleGuess(player, puzzle, captureInput, spinResult);
             }
