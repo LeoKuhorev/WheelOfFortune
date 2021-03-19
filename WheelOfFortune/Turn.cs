@@ -16,7 +16,12 @@
         /// <returns><c>"W"</c> if the user wants to spin the wheel; <c>"S"</c> if the user wants to solve the puzzle.</returns>
         private static string GetPlayerSelection(Player player, ICaptureInput captureInput)
         {
-            Console.WriteLine($"{player.Name}, do you want to Spin the [W]heel or [S]olve the puzzle? (W/S):");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write($"{player.Name}, ");
+            Console.ResetColor();
+            Console.WriteLine($"your Round score: ${player.RoundScore.GetBalance()}");
+            Console.WriteLine("Do you want to Spin the [W]heel or [S]olve the puzzle? (W/S):");
+
             string playerInput = captureInput.CaptureInput();
 
             while (!string.Equals("W", playerInput) && !string.Equals("S", playerInput))
@@ -48,20 +53,23 @@
             }
 
             int result = puzzle.GetNumberOfMatches(char.Parse(playerInput));
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
 
             if (result > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 if (result == 1)
                 {
-                    Console.WriteLine($"There is 1 {playerInput}.");
-                    // player.RoundScore += spinResult;
+                    Console.WriteLine($"There is 1 '{playerInput}'.");
                 }
                 else
                 {
-                    Console.WriteLine($"There are {result} {playerInput}s.");
-                    // player.RoundScore += (result * spinResult);
+                    Console.WriteLine($"There are {result} '{playerInput}'s.");
                 }
+                player.RoundScore.AddAmount(result * spinResult);
                 Console.ResetColor();
             }
             else
@@ -69,18 +77,14 @@
                 Console.ForegroundColor = ConsoleColor.Red;
                 if (puzzle.DisplayPhrase().Contains(playerInput))
                 {
-                    Console.WriteLine($"Sorry, {playerInput} is already on the board.");
+                    Console.WriteLine($"Sorry {player.Name}, '{playerInput}' is already on the board, you lose your turn");
                 }
                 else
                 {
-                    Console.WriteLine($"Sorry, there are no {playerInput}s.");
+                    Console.WriteLine($"Sorry {player.Name}, there are no '{playerInput}'s, you lose your turn");
                 }
                 Console.ResetColor();
             }
-
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(puzzle.DisplayPhrase());
-            Console.ResetColor();
 
             return result > 0;
         }
@@ -105,18 +109,27 @@
 
             bool result = puzzle.PhraseMatches(playerInput);
 
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
+            }
+
             if (result)
             {
+                player.GameScore.AddAmount(player.RoundScore.GetBalance());
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Congrats {player.Name}, you solved the puzzle!");
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(puzzle.DisplayPhrase());
                 Console.ResetColor();
+                Console.WriteLine($"Your total game balance is ${player.GameScore.GetBalance()}");
+                Console.WriteLine("Please press enter to continue");
+                captureInput.CaptureInput();
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sorry, that's incorrect.\n");
+                Console.WriteLine($"Sorry, {player.Name} that's incorrect, you lose your turn");
                 Console.ResetColor();
             }
             return result;
@@ -132,12 +145,15 @@
         /// <returns><c>true</c> if the turn resulted in a successful guess; otherwise, <c>false</c>.</returns>
         public static bool HandleTurn(Player player, Puzzle puzzle, ICaptureInput captureInput, IWheel wheel)
         {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(puzzle.DisplayPhrase());
+            Console.ResetColor();
+
             bool successfulGuess;
             string playerSelection = GetPlayerSelection(player, captureInput);
 
             if (playerSelection == "W")
             {
-                //successfulGuess = HandleGuess(player, puzzle);
                 successfulGuess = HandleSpin(player, puzzle, captureInput, wheel);
             }
             else
@@ -161,16 +177,26 @@
             int spinResult = wheel.Spin();
             if (spinResult == -1)
             {
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
+                }
+
+                player.RoundScore.Reset();
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("Spin result: Bankrupt\n");
+                Console.WriteLine($"{player.Name}, Your spin result: Bankrupt, you lost all your Round money!");
                 Console.ResetColor();
-                // player.RoundScore = 0;
                 return false;
             }
             else if (spinResult == 0)
             {
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
+                }
+
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("Spin result: Lose A Turn\n");
+                Console.WriteLine($"{player.Name}, Your spin result: Lose A Turn\n");
                 Console.ResetColor();
                 return false;
             }

@@ -89,7 +89,7 @@
         [TestMethod]
         public void HandleTurn_PlayerChoosesToSolvePuzzleAndEntersCorrect_ReturnsTrue()
         {
-            var sequenceOfActions = new List<string>() { "S", "Microsoft Leap" };
+            var sequenceOfActions = new List<string>() { "S", "Microsoft Leap", "" };
             _fakeCaptureInput.AddInput(sequenceOfActions);
 
             bool result = Turn.HandleTurn(_player, _puzzle, _fakeCaptureInput, _wheel);

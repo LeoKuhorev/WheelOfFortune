@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using WheelOfFortune.Utils;
 
     /// <summary>
@@ -15,19 +16,14 @@
         private int NumberOfRounds;
 
         /// <summary>
-        /// Gets the MaxNumberOfRounds.
-        /// </summary>
-        private int MaxNumberOfRounds { get; set; } = 3;
-
-        /// <summary>
         /// Gets or sets the RoundNumber.
         /// </summary>
-        private int RoundNumber { get; set; } = 0;
+        private int RoundNumber { get; set; }
 
         /// <summary>
         /// Defines the Players.
         /// </summary>
-        private readonly List<Player> Players;
+        private List<Player> Players;
 
         /// <summary>
         /// Defines the PhraseGenerator.
@@ -52,30 +48,38 @@
             this.CaptureInput = captureInput;
         }
 
-        private void SetNumberOfRounds()
+        /// <summary>
+        /// The SetNumberOfRounds.
+        /// </summary>
+        /// <param name="maxNumberOfRounds">The maxNumberOfRounds<see cref="int"/>.</param>
+        private void SetNumberOfRounds(int maxNumberOfRounds)
         {
+            if (maxNumberOfRounds == 1)
+            {
+                NumberOfRounds = maxNumberOfRounds;
+
+            }
             while (NumberOfRounds == 0)
             {
-                if (MaxNumberOfRounds > 1)
-                {
-                    Console.WriteLine($"Please enter the number of rounds (between 1 and {MaxNumberOfRounds})");
-                    var userResponse = this.CaptureInput.CaptureInput();
-                    Int32.TryParse(userResponse, out NumberOfRounds);
+                Console.WriteLine($"Please enter the number of rounds (between 1 and {maxNumberOfRounds})");
+                var userResponse = this.CaptureInput.CaptureInput();
+                Int32.TryParse(userResponse, out NumberOfRounds);
 
-                    if (NumberOfRounds < 1 || NumberOfRounds > MaxNumberOfRounds)
-                    {
-                        Console.WriteLine("Sorry, incorrect input");
-                        NumberOfRounds = 0;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                if (NumberOfRounds < 1 || NumberOfRounds > maxNumberOfRounds)
+                {
+                    Console.WriteLine("Sorry, incorrect input");
+                    NumberOfRounds = 0;
                 }
                 else
                 {
-                    NumberOfRounds = MaxNumberOfRounds;
+                    break;
                 }
+
+            }
+
+            if (!Console.IsOutputRedirected)
+            {
+                Console.Clear();
             }
         }
 
@@ -91,20 +95,29 @@
         /// The RoundFlow.
         /// </summary>
         /// <param name="wheel">The wheel<see cref="IWheel"/>.</param>
-        public void RoundFlow(IWheel wheel)
+        /// <param name="maxNumberOfRounds">The maxNumberOfRounds<see cref="int"/>.</param>
+        public void RoundFlow(IWheel wheel, int maxNumberOfRounds)
         {
-            this.SetNumberOfRounds();
+            this.SetNumberOfRounds(maxNumberOfRounds);
             while (this.RoundNumber != this.NumberOfRounds)
             {
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
+                }
+
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine($"\nPlayers! Get ready for round {this.RoundNumber + 1}\n");
                 Console.ResetColor();
 
                 var puzzle = new Puzzle(this.PhraseGenerator);
+                Players.ForEach(player => player.RoundScore.Reset());
+                Console.WriteLine("GAME SCORE:");
+                Players.ForEach(player => Console.Write($"{player.Name}: ${player.GameScore.GetBalance()}     |     "));
+                Console.WriteLine("\n");
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("Here's your puzzle:");
-                Console.WriteLine(puzzle.DisplayPhrase());
                 Console.ResetColor();
 
                 bool successfulSolve = puzzle.IsSolved();
@@ -122,6 +135,16 @@
                 }
                 this.IncrementRound();
             }
+
+            Console.WriteLine("GAME SCORE");
+            Players.ForEach(player => Console.Write($"{player.Name}: ${player.GameScore.GetBalance()}     |     "));
+            Console.WriteLine("\n");
+
+            Player winner = Players.Aggregate((p1, p2) => p1.GameScore.GetBalance() > p2.GameScore.GetBalance() ? p1 : p2);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Congrats {winner.Name}, you won the game with ${winner.GameScore.GetBalance()}!");
+
             throw new ApplicationException();
         }
     }

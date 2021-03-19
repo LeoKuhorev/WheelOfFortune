@@ -1,7 +1,5 @@
 ﻿namespace WheelOfFortune
 {
-    using WheelOfFortune.Utils;
-
     /// <summary>
     /// Defines the <see cref="Program" />.
     /// </summary>
@@ -13,12 +11,12 @@
         /// <param name="args">The args<see cref="string[]"/>.</param>
         internal static void Main(string[] args)
         {
-            var phraseGenerator = new PhraseGenerator();
-            var captureConsoleInput = new InputUtils();
-            var game = new Game(phraseGenerator, captureConsoleInput)
+            var game = new Game()
             {
-                MaxNumberOfPlayers = 6
+                MaxNumberOfPlayers = 6,
+                MaxNumberOfRounds = 5
             };
+
 
             game.Start();
         }

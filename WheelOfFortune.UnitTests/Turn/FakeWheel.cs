@@ -2,9 +2,6 @@
 {
     class FakeWheel : IWheel
     {
-        public int Spin()
-        {
-            return 1;
-        }
+        public int Spin() => 1;
     }
 }

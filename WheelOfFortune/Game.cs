@@ -27,12 +27,12 @@
         /// <summary>
         /// Gets or sets the MaxNumberOfPlayers.
         /// </summary>
-        public int MaxNumberOfPlayers { get; set; } = 5;
+        public int MaxNumberOfPlayers { get; set; }
 
         /// <summary>
-        /// Defines the PhraseGenerator.
+        /// Gets or sets the MaxNumberOfRounds.
         /// </summary>
-        private readonly IPhraseGenerator PhraseGenerator;
+        public int MaxNumberOfRounds { get; set; }
 
         /// <summary>
         /// Defines the CaptureInput.
@@ -42,9 +42,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
-        /// <param name="phraseGenerator">The phraseGenerator<see cref="IPhraseGenerator"/>.</param>
-        /// <param name="captureInput">The captureInput<see cref="ICaptureInput"/>.</param>
-        public Game(IPhraseGenerator phraseGenerator, ICaptureInput captureInput)
+        public Game()
         {
             WelcomeMessage =
                 "\n =========== Welcome to Wheel of Fortune! =========== \n" +
@@ -52,9 +50,10 @@
                 "\n        Learn to spell your cohortmates' names!       \n" +
                 "\n (You can type \'quit\' at any time to exit the game) \n" +
                 "\n ==================================================== \n";
+            MaxNumberOfPlayers = 5;
+            MaxNumberOfRounds = 3;
             Players = new List<Player>();
-            PhraseGenerator = phraseGenerator;
-            CaptureInput = captureInput;
+            CaptureInput = new InputUtils();
         }
 
         /// <summary>
@@ -72,27 +71,25 @@
         /// </summary>
         private void SetNumberOfPlayers()
         {
+            if (MaxNumberOfPlayers == 1)
+            {
+                NumberOfPlayers = MaxNumberOfPlayers;
+            }
+
             while (NumberOfPlayers == 0)
             {
-                if (MaxNumberOfPlayers > 1)
-                {
-                    Console.WriteLine($"Please enter the number of players (between 1 and {MaxNumberOfPlayers})");
-                    var userResponse = this.CaptureInput.CaptureInput();
-                    Int32.TryParse(userResponse, out NumberOfPlayers);
+                Console.WriteLine($"Please enter the number of players (between 1 and {MaxNumberOfPlayers})");
+                var userResponse = this.CaptureInput.CaptureInput();
+                int.TryParse(userResponse, out NumberOfPlayers);
 
-                    if (NumberOfPlayers < 1 || NumberOfPlayers > MaxNumberOfPlayers)
-                    {
-                        Console.WriteLine("Sorry, incorrect input");
-                        NumberOfPlayers = 0;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                if (NumberOfPlayers < 1 || NumberOfPlayers > MaxNumberOfPlayers)
+                {
+                    Console.WriteLine("Sorry, incorrect input");
+                    NumberOfPlayers = 0;
                 }
                 else
                 {
-                    NumberOfPlayers = MaxNumberOfPlayers;
+                    break;
                 }
             }
         }
@@ -106,6 +103,7 @@
             {
                 this.AddPlayer(i + 1);
             }
+            Console.Clear();
             Console.WriteLine($"\nHello {GetPlayerNames()}! Let's play Wheel of Fortune!\n");
         }
 
@@ -135,7 +133,7 @@
                 output.Add(player.Name);
             }
 
-            return (string.Join(", ", output));
+            return string.Join(", ", output);
         }
 
         /// <summary>
@@ -148,9 +146,9 @@
                 this.GetWelcomeMessage();
                 this.SetNumberOfPlayers();
                 this.AddPlayers();
-                var wheel = new Wheel();
-                Round round = new Round(Players, this.PhraseGenerator, this.CaptureInput);
-                round.RoundFlow(wheel);
+
+                Round round = new Round(Players, new PhraseGenerator(), CaptureInput);
+                round.RoundFlow(new Wheel(), MaxNumberOfRounds);
             }
             catch (ApplicationException)
             {
