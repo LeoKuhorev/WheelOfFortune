@@ -35,12 +35,12 @@ SOLID principles, Dependency injection, static overloading
 
 ## Architecture
  
-![OODesign logo](./assets/UML.jpg)
+![OODesign logo](./Assets/UML.jpg)
 
 Game class is the entry point into the application. It instantiates the game with the required number of rounds and players. Each round has one puzzle to solve and players take several turns to solve the puzzle. At each turn, the player has two choices i.e. player can guess a letter or choose to solve the puzzle. If the player chooses to guess the puzzle, the wheel is spun. The puzzle class is responsible unlocking the guessed letters if present. The score gets calculated for the player. If the player chooses to  solve the puzzle, he/she needs to enter the answer and if correct, wins that round else the turn is passed to the next player. This continues until all the rounds are exhausted and the winner is announced
 
 ## CLI Interface
-![CLI Interface logo](./assets/WheelOfFortune.gif)
+![CLI Interface logo](./Assets/WheelOfFortune.gif)
 
 ## Azure pipeline details
 Pipeline was set up to run tests automatically with every merge to main. 
