@@ -1,21 +1,49 @@
 # Introduction 
-Testing ADO branch policies
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+## Project Overview:
+Wheel of Fortune is an American based game show where players solve word puzzles by spinning a giant wheel and win cash and prizes. Our project is to emulate this game as a stand -alone console based application. Our motivation in this project is to learn and demonstrate 
+1) the use of Azure Boards for capturing user stories while implementing Agile methodologies.
+2) object oriented design principles using UML diagrams
+3) building a standalone console applcation using C# while following SOLID principles.
+4) unit test development
+5) azure pipeline integration for CI (Continuous Integration)
+
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+
+## Technologies used
+Visual Studio , GIT, C#, Azure DevOps, .NET Framework 
 1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+ - Repo can be found at https://v-sdixit@dev.azure.com/v-sdixit/Wheel%20of%20Fortune/_git/Wheel%20of%20Fortune
+ - Clone the repo in Visual Studio
+2.	Latest releases - 2.0
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Build and Test
+Use CTRL+SHIFT+B to build . Run the code using CTRL + F5. For every feature, always add unit tests before creating a pull request
+ 
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Assumptions
+Multiple players will play on the same console.
+
+## Out of scope
+1) Implementing user login and authentication.  
+2) Implementing graphical user interface
+ 
+
+## Concepts Implemented
+SOLID principles, Dependency injection, static overloading
+
+## Architecture
+ 
+![OODesign logo](./assets/UML.jpg)
+
+Game class is the entry point into the application. It instantiates the game with the required number of rounds and players. Each round has one puzzle to solve and players take several turns to solve the puzzle. At each turn, the player has two choices i.e. player can guess a letter or choose to solve the puzzle. If the player chooses to guess the puzzle, the wheel is spun. The puzzle class is responsible unlocking the guessed letters if present. The score gets calculated for the player. If the player chooses to  solve the puzzle, he/she needs to enter the answer and if correct, wins that round else the turn is passed to the next player. This continues until all the rounds are exhausted and the winner is announced
+
+## CLI Interface
+![CLI Interface logo](./assets/WheelOfFortune.gif)
+
+## Azure pipeline details
+Pipeline was set up to run tests automatically with every merge to main. 
+
+## Contributors
+Leo Kukharau, Joseph Yang, Michelle Tanzil, William Brennan, Supriya Dixit
